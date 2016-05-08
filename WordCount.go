@@ -4,15 +4,14 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "path/filepath"
-	"regexp"
-    "log"
-    "os"
-    "strings"
-    "strconv"
-
+     "bufio"
+     "fmt"
+     "path/filepath"
+     "regexp"
+     "log"
+     "os"
+     "strings"
+     "strconv"
 )
 
 func main() {
@@ -24,7 +23,6 @@ func main() {
     vWordArr := map[string]int{}
     for _, filename := range os.Args[1:]{
         myReadFile(filename, vWordArr)
-
     }
     myPrintORWrite(vWordArr,os.Args[1])
 
