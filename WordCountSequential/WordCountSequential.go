@@ -19,7 +19,7 @@ var fileList []string
 
 func main() {
     if len(os.Args) == 1 || os.Args[1] == "-h" || os.Args[1] == "--help" {
-        fmt.Printf("Usage: %s <file1> [file2/3/4 . . .] \n", filepath.Base(os.Args[0]))
+        fmt.Printf("Usage: %s <file/directory 1> [file/directory 2/3/4 . . .] \n", filepath.Base(os.Args[0]))
         os.Exit(1)
     }
 
