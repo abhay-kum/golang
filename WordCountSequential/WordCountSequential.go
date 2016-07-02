@@ -107,7 +107,7 @@ func myPrintORWrite(vWordArr map[string]int, filename string) {
         //fmt.Printf("%s %d\n",word,frequency)
         fmt.Fprintln(writer, word+","+strconv.Itoa(frequency))
      }
-     
+
     writer.Flush()
     filehandle.Close()
 
