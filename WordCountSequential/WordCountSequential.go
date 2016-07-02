@@ -1,6 +1,6 @@
 // Author: Habib Rangoonwala
 // Created: 03-May-2016
-// Updated: 04-May-2016
+// Updated: 01-July-2016
 package main
 
 import (
@@ -12,7 +12,10 @@ import (
      "os"
      "strings"
      "strconv"
+     "time"
 )
+
+var fileList []string
 
 func main() {
     if len(os.Args) == 1 || os.Args[1] == "-h" || os.Args[1] == "--help" {
@@ -20,11 +23,38 @@ func main() {
         os.Exit(1)
     }
 
+    starttime := time.Now()
+    fmt.Println("Processing . . .")
+
     vWordArr := map[string]int{}
+    //fileList := []string{}
+
+    //identify all the files and/or files from directory
     for _, filename := range os.Args[1:]{
-        myReadFile(filename, vWordArr)
+        myListFiles(filename)
     }
+
+    // process all the files
+    for _, file := range fileList {
+       myReadFile(file, vWordArr)
+       //fmt.Println(file)
+   }
+
     myPrintORWrite(vWordArr,os.Args[1])
+    elapsedtime := time.Since(starttime)
+    fmt.Println("Complete!!")
+    fmt.Println("Time taken:",elapsedtime)
+
+}
+
+func myListFiles( searchDir string) {
+
+	filepath.Walk(searchDir, func(path string, f os.FileInfo, err error) error {
+		if !f.IsDir() {
+			fileList = append(fileList, path)
+		}
+		return nil
+	})
 
 }
 
@@ -36,6 +66,8 @@ func myReadFile(filename string, vWordArr map[string]int) {
         log.Println("Error: ", err)
         return
     }
+    fmt.Println(". . . " + filename)
+
     scanner := bufio.NewScanner(file)
 
     //regex to remove all special characters
@@ -67,13 +99,15 @@ func myPrintORWrite(vWordArr map[string]int, filename string) {
 		log.Println("Error writing to file: ", err)
 		return
 	}
+     fmt.Println("Writing to file:" , filehandle.Name())
 
 	writer := bufio.NewWriter(filehandle)
 
     for word, frequency := range vWordArr {
-        fmt.Printf("%s %d\n",word,frequency)
+        //fmt.Printf("%s %d\n",word,frequency)
         fmt.Fprintln(writer, word+","+strconv.Itoa(frequency))
      }
+     
     writer.Flush()
     filehandle.Close()
 
